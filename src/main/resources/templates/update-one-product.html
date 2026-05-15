@@ -1,7 +1,7 @@
 <html xmlns:th="http://www.thymeleaf.org" >
 <body>
 <h1>Lūdzu rediģē produktu:</h1>
-	<form method="post" th:object="${product}" th:action="@{/update/__${id}__}"  >
+	<form method="post" th:object="${product}" th:action="@{/product/crud/update/__${id}__}"  >
 		
 		<p>Ievadi nosaukumu</p>
 		<input type="text" th:field="*{title}"/> 

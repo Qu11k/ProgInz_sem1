@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import lv.venta.Service.ICRUDprodService;
@@ -32,7 +33,7 @@ public class ProductCRUDController {
 		}
 	}
 	@GetMapping("/all/{id}")
-	public String getCpntrollerRetrieveById(@PathVariable(name = "id")int id,Model model) {
+	public String getControllerRetrieveById(@PathVariable(name = "id")int id,Model model) {
 		try {
 		Product productFromDB = prodService.retrieveById(id);
 		model.addAttribute("package", productFromDB);
@@ -43,5 +44,51 @@ public class ProductCRUDController {
 			return "error-page";
 		}
 		}
-}
+	@GetMapping("/add")
+	public String getControllerForProductAdding(Model model) {
+		
+		model.addAttribute("product", new Product());
+		return "add-one-product";
+	}
+	@PostMapping ("/add")
+	public String postcontrollerForProductAdding(Product product, Model model) {
+		try {
+			prodService.createNewProduct(product);
+			return "redirect:/product/crud/all";
+		}
+		catch(Exception e){
+			model.addAttribute("package", e.getMessage());
+			return "error-page";
+		}
+	}
+	@GetMapping("/update/{id}")
+	public String getControllerForUpdateById(@PathVariable(name = "id") int id, Model model) {
 
+	    try {
+	        Product productFromDB = prodService.retrieveById(id);
+
+	        model.addAttribute("product", productFromDB);
+
+	        return "update-one-product";
+	    }
+	    catch(Exception e) {
+	        model.addAttribute("package", e.getMessage());
+	        return "error-page";
+	    }
+	}
+	@PostMapping("/update/{id}")
+	public String postControllerForUpdateById(@PathVariable(name = "id") int id, Product product,
+			Model model) {
+		try
+		{
+			prodService.updateProductbyId(id, product.getPrice(), product.getCategory(),
+				product.getDescription(), product.getQuantity());
+			return "redirect:/product/crud/all/" + id;
+		}
+		catch (Exception e) {
+			model.addAttribute("package", e.getMessage());
+			return "error-page";
+		}
+	}
+	
+}

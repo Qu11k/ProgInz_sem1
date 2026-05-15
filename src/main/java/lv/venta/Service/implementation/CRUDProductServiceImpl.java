@@ -25,6 +25,7 @@ public class CRUDProductServiceImpl implements ICRUDprodService {
 		if(newProduct.getTitle()==null || newProduct.getTitle().isEmpty()||newProduct.getCategory()==null||newProduct.getPrice()<=0||newProduct.getPrice()>100000||newProduct.getDescription()==null||newProduct.getQuantity()<0||newProduct.getQuantity()>100000) {
 			throw new Exception("nav korekti ievades dati");
 		}
+	
 		return prodRepo.save(newProduct);
 	}
 
@@ -36,14 +37,35 @@ public class CRUDProductServiceImpl implements ICRUDprodService {
 		return (ArrayList<Product>) prodRepo.findAll();
 	}
 
-	@Override
-	public Product updateProductbyId(int id, float price, Category category, String description, int quantity)
+	public Product updateProductById(int id, float price, Category category, String description, int quantity)
 			throws Exception {
-		if(id<1) {
-			throw new Exception("id nevar but negativs");
+		Product productForUpdating = retrieveById(id);
+		
+		if(category == null || price < 0
+				|| price > 100000 || description == null
+				|| quantity < 0 || quantity > 100000) {
+			throw new Exception("Nav korekti ievades dati");
+		}
+
+	
+		if(productForUpdating.getPrice() != price) {
+			productForUpdating.setPrice(price);
 		}
 		
-		return null;
+		if(!productForUpdating.getCategory().equals(category))
+		{
+			productForUpdating.setCategory(category);
+		}
+		if(!productForUpdating.getDescription().equals(description))
+		{
+			productForUpdating.setDescription(description);
+		}
+		if(productForUpdating.getQuantity() != quantity) 
+		{
+			productForUpdating.setQuantity(quantity);
+		}
+		
+		return prodRepo.save(productForUpdating);
 	}
 
 	@Override
@@ -70,6 +92,39 @@ public class CRUDProductServiceImpl implements ICRUDprodService {
 			throw new Exception("produkts ar id"+id+ "neeksiste");
 		}
 			return prodRepo.findById(id).get();
+	}
+
+	@Override
+	public Product updateProductbyId(int id, float price, Category category, String description, int quantity)
+			throws Exception {
+Product productForUpdating = retrieveById(id);
+		
+		if(category == null || price < 0
+				|| price > 100000 || description == null
+				|| quantity < 0 || quantity > 100000) {
+			throw new Exception("Nav korekti ievades dati");
+		}
+
+	
+		if(productForUpdating.getPrice() != price) {
+			productForUpdating.setPrice(price);
+		}
+		
+		if(!productForUpdating.getCategory().equals(category))
+		{
+			productForUpdating.setCategory(category);
+		}
+		if(!productForUpdating.getDescription().equals(description))
+		{
+			productForUpdating.setDescription(description);
+		}
+		if(productForUpdating.getQuantity() != quantity) 
+		{
+			productForUpdating.setQuantity(quantity);
+		}
+
+		return prodRepo.save(productForUpdating);
+	
 	}
 
 }
