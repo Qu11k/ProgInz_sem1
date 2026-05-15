@@ -1,11 +1,11 @@
-package Service.implementation;
+package lv.venta.Service.implementation;
 
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import Service.ICRUDprodService;
+import lv.venta.Service.ICRUDprodService;
 import lv.venta.model.Category;
 import lv.venta.model.Product;
 import lv.venta.repo.IProductRepo;
