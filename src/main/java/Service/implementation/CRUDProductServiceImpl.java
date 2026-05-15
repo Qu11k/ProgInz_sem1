@@ -48,9 +48,17 @@ public class CRUDProductServiceImpl implements ICRUDprodService {
 
 	@Override
 	public void deleteProduct(int id) throws Exception {
-		// TODO Auto-generated method stub
-		
+		if(id < 1) {
+	        throw new Exception("id nevar but negativs");
+	    }
+
+	    if(!prodRepo.existsById(id)) {
+	        throw new Exception("produkts ar id " + id + " neeksiste");
+	    }
+
+	    prodRepo.deleteById(id);
 	}
+	
 
 	@Override
 	public Product retrieveById(int id) throws Exception {
